@@ -477,19 +477,7 @@ DataLayerClusterer.prototype.featureBounds_ = function (feature, extendBounds) {
   var geom = feature.getGeometry ? feature.getGeometry() : feature,
       geom_bounds = extendBounds || new google.maps.LatLngBounds();
 
-    if (geom.getType() == 'Point') {
-      geom_bounds.extend(geom.get());
-    } else {
-      geom.getArray().forEach(function (g) {
-        if (g instanceof google.maps.LatLng) {
-          geom_bounds.extend(g);
-        } else {
-          g.getArray().forEach(function (LatLng) {
-            geom_bounds.extend(LatLng);
-          });
-        }
-      });
-    }
+  geom.forEachLatLng(function (latLng) { geom_bounds.extend(latLng); });
     
   return geom_bounds;
 };
